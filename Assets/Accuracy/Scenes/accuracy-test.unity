@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c455860d0484504a33ea4577a023d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer:
+  m_TargetLayer:
     serializedVersion: 2
     m_Bits: 256
 --- !u!114 &62911098
@@ -166,10 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb8a552301ed47089ac52929dadd21d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset:
+  m_Offset:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 5, y: 2, z: 0}
-  targetPrefab: {fileID: 4711196386248359359, guid: 88d20b50c1375472cb875a86aa760042,
+  m_TargetPrefab: {fileID: 4711196386248359359, guid: 88d20b50c1375472cb875a86aa760042,
     type: 3}
 --- !u!4 &62911099
 Transform:

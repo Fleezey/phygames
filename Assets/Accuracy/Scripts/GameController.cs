@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace PhyGames
 {
     [RequireComponent(typeof(TargetSpawner))]
-    public class WorldController : MonoBehaviour
+    public class GameController : MonoBehaviour
     {
         public UnityEvent TargetHit { get; private set; }
 
