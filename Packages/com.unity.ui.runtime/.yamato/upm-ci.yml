@@ -1,0 +1,141 @@
+test_editors:
+  - version: 2019.3
+test_targets:
+  - platform: "" #empty to get editmode+playmode in editor
+    name: editor
+  - platform: standalone
+    name: player
+test_platforms:
+  - name: win
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+  - name: mac
+    type: Unity::VM::osx
+    image: buildfarm/mac:stable
+    flavor: m1.mac
+---
+pack:
+  name: Pack
+  agent:
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+  commands:
+    - npm install upm-ci-utils@stable -g --registry https://api.bintray.com/npm/unity/unity-npm
+    - upm-ci package pack
+  artifacts:
+    packages:
+      paths:
+        - "upm-ci~/**/*"
+
+{% for editor in test_editors %}
+{% for platform in test_platforms %}
+{% for target in test_targets %}
+test_{{ platform.name }}_{{ editor.version }}_{{ target.name }}:
+  name : Test {{ editor.version }} on {{ platform.name }} ({{ target.name }})
+  agent:
+    type: {{ platform.type }}
+    image: {{ platform.image }}
+    flavor: {{ platform.flavor}}
+  commands:
+    - npm install upm-ci-utils@stable -g --registry https://api.bintray.com/npm/unity/unity-npm
+  {% if target.platform == "" %}
+    - upm-ci package test --unity-version {{ editor.version }}
+  {% else %}
+    - upm-ci package test --unity-version {{ editor.version }} --platform {{ target.platform }}
+  {% endif %}
+  artifacts:
+    logs:
+      paths:
+        - "upm-ci~/test-results/**/*"
+  dependencies:
+    - .yamato/upm-ci.yml#pack
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
+test_trigger:
+  name: Tests Trigger
+  agent:
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+  commands:
+    - dir
+  triggers:
+    branches:
+      only:
+        - "/.*/"
+  artifacts:
+    logs:
+      paths:
+        - "upm-ci~/test-results/**/*"
+    packages:
+      paths:
+        - "upm-ci~/packages/**/*"
+  dependencies:
+    - .yamato/upm-ci.yml#pack
+    {% for editor in test_editors %}
+    {% for platform in test_platforms %}
+    {% for target in test_targets %}
+    - .yamato/upm-ci.yml#test_{{platform.name}}_{{editor.version}}_{{target.name}}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
+publish:
+  name: Publish to Internal Registry
+  agent:
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+  commands:
+    - npm install upm-ci-utils@stable -g --registry https://api.bintray.com/npm/unity/unity-npm
+    - upm-ci package publish
+  triggers:
+    tags:
+      only:
+        - /^(r|R)(c|C)-\d+\.\d+\.\d+(-preview(\.\d+)?)?$/
+  artifacts:
+    artifacts:
+      paths:
+        - "upm-ci~/packages/*.tgz"
+  dependencies:
+    - .yamato/upm-ci.yml#pack
+    {% for editor in test_editors %}
+    {% for platform in test_platforms %}
+    {% for target in test_targets %}
+    - .yamato/upm-ci.yml#test_{{platform.name}}_{{editor.version}}_{{target.name}}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
+promote:
+  name: Promote to Production
+  agent:
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+  variables:
+    UPMCI_PROMOTION: 1
+  commands:
+    - npm install upm-ci-utils@stable -g --registry https://api.bintray.com/npm/unity/unity-npm
+    - upm-ci package promote
+  triggers:
+    tags:
+      only:
+        - /^\d+.\d+.\d+(-preview(.\d+)?)?$/
+  artifacts:
+    artifacts:
+      paths:
+        - "upm-ci~/packages/*.tgz"
+  dependencies:
+    - .yamato/upm-ci.yml#pack
+    {% for editor in test_editors %}
+    {% for platform in test_platforms %}
+    {% for target in test_targets %}
+    - .yamato/upm-ci.yml#test_{{platform.name}}_{{editor.version}}_{{target.name}}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
