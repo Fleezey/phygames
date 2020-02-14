@@ -1,37 +1,82 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace PhyGames.NBack
 {
-    public class GameController : MonoBehaviour
+    public class GameController : Singleton<GameController>
     {
         public Symbol[] m_Symbols;
+        public Image m_ImageHolder;
+        public GameObject m_ControlsUI;
 
         private Symbol m_CurrentSymbol;
-        private Queue m_previousSymbols;
+        private Symbol m_PreviousSymbol;
 
 
         private void Start()
         {
-            m_previousSymbols = new Queue();
-            m_CurrentSymbol = GetRandomSymbol();
+            m_ControlsUI.SetActive(false);
+            ShowFirstSymbol();
         }
 
-        private void Update()
+
+        public void HandleSameSymbolAction()
         {
-            if (Input.GetKeyDown("space"))
+            ValidateSymbol(true);
+            ShowNextSymbol();
+        }
+
+        public void HandleDifferentSymbolAction()
+        {
+            ValidateSymbol(false);
+            ShowNextSymbol();
+        }
+
+        private void ValidateSymbol(bool isSame)
+        {
+            if ((m_CurrentSymbol.id == m_PreviousSymbol.id) == isSame)
             {
-                m_previousSymbols.Enqueue(m_CurrentSymbol);
-                m_CurrentSymbol = GetRandomSymbol();
+                Debug.Log("Good");
+            }
+            else
+            {
+                Debug.Log("Bad");
             }
         }
 
 
+        private void ShowFirstSymbol()
+        {
+            AssignSymbol(GetRandomSymbol());
+            StartCoroutine(ActivateUIControls());
+        }
+
+        IEnumerator ActivateUIControls()
+        {
+            yield return new WaitForSeconds(2);
+            m_ControlsUI.SetActive(true);
+            ShowNextSymbol();
+        }
+
+        private void AssignSymbol(Symbol symbol)
+        {
+            m_CurrentSymbol = symbol;
+            m_ImageHolder.sprite = m_CurrentSymbol.image;
+        }
+
+        private void ShowNextSymbol()
+        {
+            m_PreviousSymbol = m_CurrentSymbol;
+            AssignSymbol(GetRandomSymbol());
+        }
+
         private Symbol GetRandomSymbol()
         {
-            return m_Symbols[Random.Range(0, m_Symbols.Length)];
+            return m_Symbols[Random.Range(0, 3)];
+            // return m_Symbols[Random.Range(0, m_Symbols.Length)];
         }
     }
 }

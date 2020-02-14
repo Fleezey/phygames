@@ -9,6 +9,6 @@ namespace PhyGames.NBack
     public class Symbol : ScriptableObject
     {
         public string id;
-        public Texture2D image;
+        public Sprite image;
     }
 }

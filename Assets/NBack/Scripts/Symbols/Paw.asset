@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Paw
   m_EditorClassIdentifier: 
   id: Paw
-  image: {fileID: 2800000, guid: 95127b79ab439da4f811697793857183, type: 3}
+  image: {fileID: 21300000, guid: 95127b79ab439da4f811697793857183, type: 3}
