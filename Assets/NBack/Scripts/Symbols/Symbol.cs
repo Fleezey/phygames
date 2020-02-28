@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace PhyGames.NBack
+namespace PhyGames
 {
     [CreateAssetMenu(fileName = "Symbol", menuName = "NBack/Create a new symbol", order = 0)]
     public class Symbol : ScriptableObject
