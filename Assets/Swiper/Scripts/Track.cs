@@ -8,7 +8,6 @@ namespace PhyGames
     {
         public RectTransform DropRectTransform => m_DropRectTransform;
         public Image SymbolImage => m_SymbolImage;
-        public Image BaseImage => m_BaseImage;
         public TrackHandle[] Handles { get; set; }
         public Symbol CurrentSymbol { get; private set; }
 
@@ -17,8 +16,6 @@ namespace PhyGames
         private RectTransform m_DropRectTransform;
         [SerializeField]
         private Image m_SymbolImage;
-        [SerializeField]
-        private Image m_BaseImage;
         [SerializeField]
         private GameObject m_HandlesParent;
 
