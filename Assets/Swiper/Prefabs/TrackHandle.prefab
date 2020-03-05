@@ -84,9 +84,10 @@ GameObject:
   - component: {fileID: 1073137730993281750}
   - component: {fileID: 1073137730993281748}
   - component: {fileID: 1073137730993281751}
+  - component: {fileID: 7050315095184147345}
   - component: {fileID: 1073137730993281749}
   m_Layer: 5
-  m_Name: Handle
+  m_Name: TrackHandle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,8 +134,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469b693cd644742468bf135f9bfe4732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Symbol: {fileID: 11400000, guid: 9deb3b2ae13cbda4daa7ee252b1e89e2, type: 2}
   m_SymbolImage: {fileID: 1073137730729620492}
+--- !u!114 &7050315095184147345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073137730993281577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83de6f11feaa4c06830231a0b8e7289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!225 &1073137730993281749
 CanvasGroup:
   m_ObjectHideFlags: 0

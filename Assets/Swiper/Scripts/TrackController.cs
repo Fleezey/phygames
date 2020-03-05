@@ -14,7 +14,7 @@ namespace PhyGames
 
         private void Start()
         {
-            StartNextRound();
+            m_Track.Initialize(this);
         }
 
         
@@ -27,14 +27,8 @@ namespace PhyGames
 
             if (handleRect.Overlaps(dropRect) && handle.Symbol == CurrentSymbol)
             {
-                StartNextRound();
+                m_Track.Refresh(handle);
             }
-        }
-
-
-        private void StartNextRound()
-        {
-            m_Track.Initialize(this);
         }
 
         private Rect GetRectFromRectTransform(RectTransform rectTransform)

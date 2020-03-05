@@ -5,10 +5,13 @@ using UnityEngine.EventSystems;
 
 namespace PhyGames
 {
-    [RequireComponent(typeof (RectTransform), typeof (CanvasGroup))]
+    [RequireComponent(typeof (RectTransform), typeof (CanvasGroup), typeof (TrackHandleAnimationController))]
     public class TrackHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         public bool Initialized { get; private set; }
+        public CanvasGroup CanvasGroup => m_CanvasGroup;
+        public Image SymbolImage => m_SymbolImage;
+        public TrackHandleAnimationController AnimationController => m_HandleAnimationController;
         public RectTransform RectTransform { get; private set; }
         public Symbol Symbol { get; private set; }
 
@@ -18,6 +21,7 @@ namespace PhyGames
         private Canvas m_Canvas;
         private CanvasGroup m_CanvasGroup;
         private TrackController m_TrackController;
+        private TrackHandleAnimationController m_HandleAnimationController;
         private SwipeInfo m_SwipeInfo;
         private Vector3 m_InitialPosition;
 
@@ -26,6 +30,7 @@ namespace PhyGames
         {
             m_Canvas = GetComponentInParent<Canvas>();
             m_CanvasGroup = GetComponent<CanvasGroup>();
+            m_HandleAnimationController = GetComponent<TrackHandleAnimationController>();
             RectTransform = GetComponent<RectTransform>();
             gameObject.SetActive(false);
         }
@@ -37,11 +42,13 @@ namespace PhyGames
             m_InitialPosition = RectTransform.position;
             Initialized = true;
             gameObject.SetActive(true);
+            m_HandleAnimationController.Appear();
         }
 
         public void ResetPosition()
         {
             RectTransform.position = m_InitialPosition;
+            m_HandleAnimationController.Appear();
         }
         
         public void AssignSymbol(Symbol symbol)
@@ -79,7 +86,6 @@ namespace PhyGames
             m_CanvasGroup.blocksRaycasts = true;
             m_TrackController.OnHandleDrop(this);
         }
-
 
         private struct SwipeInfo
         {

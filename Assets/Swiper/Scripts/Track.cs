@@ -28,20 +28,43 @@ namespace PhyGames
 
         public void Initialize(TrackController controller)
         {
-            Swiper.GameController.Instance.ShuffleSymbols();
-            CurrentSymbol = Swiper.GameController.Instance.GetRandomSymbol(Handles.Length);
-            SymbolImage.sprite = CurrentSymbol.image;
-
-
+            Shuffle();
             for (int i = 0; i < Handles.Length; i++)
             {
                 if (!Handles[i].Initialized)
                 {
                     Handles[i].Initialize(controller);
+                    AssignSymbol(Handles[i], i);
                 }
-
-                Handles[i].AssignSymbol(Swiper.GameController.Instance.GetSymbolFromList(i));
             }
+        }
+
+        public void Refresh(TrackHandle currentHandle = null)
+        {
+            Shuffle();
+            for (int i = 0; i < Handles.Length; i++)
+            {
+                Handles[i].AssignSymbol(Swiper.GameController.Instance.GetSymbolFromList(i));
+                AssignSymbol(Handles[i], i);
+
+                if (!currentHandle || Handles[i] != currentHandle)
+                {
+                    Handles[i].AnimationController.AppearSymbol();
+                }
+            }
+        }
+
+
+        private void Shuffle()
+        {
+            Swiper.GameController.Instance.ShuffleSymbols();
+            CurrentSymbol = Swiper.GameController.Instance.GetRandomSymbol(Handles.Length);
+            SymbolImage.sprite = CurrentSymbol.image;
+        }
+
+        private void AssignSymbol(TrackHandle handle, int symbolIndex)
+        {
+            handle.AssignSymbol(Swiper.GameController.Instance.GetSymbolFromList(symbolIndex));
         }
     }
 }

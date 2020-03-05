@@ -197,7 +197,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DropRectTransform: {fileID: 3657763849451274701}
   m_SymbolImage: {fileID: 8666141858440804975}
-  m_BaseImage: {fileID: 0}
   m_HandlesParent: {fileID: 744926522757843850}
 --- !u!1 &8666141858440804969
 GameObject:
