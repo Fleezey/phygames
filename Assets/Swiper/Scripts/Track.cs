@@ -7,7 +7,6 @@ namespace PhyGames
     public class Track : MonoBehaviour
     {
         public RectTransform DropRectTransform => m_DropRectTransform;
-        public Image SymbolImage => m_SymbolImage;
         public TrackHandle[] Handles { get; set; }
         public Symbol CurrentSymbol { get; private set; }
 
@@ -15,7 +14,7 @@ namespace PhyGames
         [SerializeField]
         private RectTransform m_DropRectTransform;
         [SerializeField]
-        private Image m_SymbolImage;
+        private Swiper.SymbolChanger m_SymbolImageChanger;
         [SerializeField]
         private GameObject m_HandlesParent;
 
@@ -30,7 +29,7 @@ namespace PhyGames
         {
             Swiper.GameController.Instance.ShuffleSymbols();
             CurrentSymbol = Swiper.GameController.Instance.GetRandomSymbol(Handles.Length);
-            SymbolImage.sprite = CurrentSymbol.image;
+            m_SymbolImageChanger.SetSymbol(CurrentSymbol);
 
 
             for (int i = 0; i < Handles.Length; i++)

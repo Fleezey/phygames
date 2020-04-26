@@ -15,11 +15,15 @@ namespace PhyGames
         [SerializeField]
         private Image m_SymbolImage;
 
+        [SerializeField]
+        private RectTransform m_HandleGroupRectTransform;
+
         private Canvas m_Canvas;
         private CanvasGroup m_CanvasGroup;
         private TrackController m_TrackController;
         private SwipeInfo m_SwipeInfo;
         private Vector3 m_InitialPosition;
+        private float m_HandleGroupInitialWidth;
 
 
         private void Awake()
@@ -34,7 +38,6 @@ namespace PhyGames
         public void Initialize(TrackController controller)
         {
             m_TrackController = controller;
-            m_InitialPosition = RectTransform.position;
             Initialized = true;
             gameObject.SetActive(true);
         }
@@ -55,6 +58,9 @@ namespace PhyGames
         {
             m_SwipeInfo = new SwipeInfo(RectTransform.position);
             m_CanvasGroup.blocksRaycasts = false;
+
+            m_InitialPosition = RectTransform.position;
+            m_HandleGroupInitialWidth = m_HandleGroupRectTransform.rect.width;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -71,12 +77,16 @@ namespace PhyGames
             handlePosition.x = Mathf.Clamp(handlePosition.x, Mathf.Min(xPositions), Mathf.Max(xPositions));
             handlePosition.y = Mathf.Clamp(handlePosition.y, Mathf.Min(yPositions), Mathf.Max(yPositions));
 
-            RectTransform.position = handlePosition;
+            Rect updatedGroupRect = new Rect(m_HandleGroupRectTransform.rect);
+            updatedGroupRect.width = m_HandleGroupInitialWidth - (handlePosition - m_InitialPosition).magnitude;
+            updatedGroupRect.width = Mathf.Clamp(updatedGroupRect.width, 0f, m_HandleGroupInitialWidth);
+            m_HandleGroupRectTransform.sizeDelta = new Vector2(updatedGroupRect.width, m_HandleGroupRectTransform.sizeDelta.y);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             m_CanvasGroup.blocksRaycasts = true;
+            m_HandleGroupRectTransform.sizeDelta = new Vector2(m_HandleGroupInitialWidth, m_HandleGroupRectTransform.sizeDelta.y);
             m_TrackController.OnHandleDrop(this);
         }
 
