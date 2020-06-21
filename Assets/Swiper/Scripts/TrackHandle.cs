@@ -85,9 +85,13 @@ namespace PhyGames
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (m_HandleGroupRectTransform.rect.width / m_HandleGroupInitialWidth <= 0.3f)
+            {
+                m_TrackController.OnHandleDrop(this);
+            }
+
             m_CanvasGroup.blocksRaycasts = true;
             m_HandleGroupRectTransform.sizeDelta = new Vector2(m_HandleGroupInitialWidth, m_HandleGroupRectTransform.sizeDelta.y);
-            m_TrackController.OnHandleDrop(this);
         }
 
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -8,6 +9,8 @@ namespace PhyGames
     {
         public RectTransform DropRectTransform => m_Track.DropRectTransform;
         public Symbol CurrentSymbol => m_Track.CurrentSymbol;
+
+        public Action OnDropSuccess;
 
         [SerializeField]
         private Track m_Track;
@@ -21,13 +24,13 @@ namespace PhyGames
         
         public void OnHandleDrop(TrackHandle handle)
         {
-            Rect handleRect = GetRectFromRectTransform(handle.RectTransform);
-            Rect dropRect = GetRectFromRectTransform(DropRectTransform);
-
-            handle.ResetPosition();
-
-            if (handleRect.Overlaps(dropRect) && handle.Symbol == CurrentSymbol)
+            if (handle.Symbol == CurrentSymbol)
             {
+                if (OnDropSuccess != null)
+                {
+                    OnDropSuccess();
+                }
+
                 StartNextRound();
             }
         }
@@ -36,16 +39,6 @@ namespace PhyGames
         private void StartNextRound()
         {
             m_Track.Initialize(this);
-        }
-
-        private Rect GetRectFromRectTransform(RectTransform rectTransform)
-        {
-            return new Rect(
-                rectTransform.anchoredPosition.x,
-                rectTransform.anchoredPosition.y,
-                rectTransform.rect.width,
-                rectTransform.rect.height
-            );
         }
     }
 }
