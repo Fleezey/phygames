@@ -10,7 +10,7 @@ namespace PhyGames.NBack
     {
         public int m_BackAmount = 1;
         public Symbol[] m_Symbols;
-        public Image m_ImageHolder;
+        public Image[] m_ImageHolders;
         public GameObject m_ControlsUI;
 
         private Symbol m_CurrentSymbol;
@@ -80,7 +80,11 @@ namespace PhyGames.NBack
         private void AssignSymbol(Symbol symbol)
         {
             m_CurrentSymbol = symbol;
-            m_ImageHolder.sprite = m_CurrentSymbol.image;
+			
+			foreach (Image imageHolder in m_ImageHolders)
+			{
+				imageHolder.sprite = m_CurrentSymbol.image;
+			}
         }
 
         private void ShowNextSymbol()
