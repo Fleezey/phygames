@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using PhyGames;
+using PhyGames.Audio;
+
 
 namespace PhyGames.NBack
 {
@@ -42,11 +43,11 @@ namespace PhyGames.NBack
             Symbol symbolToCompare = GetPreviousSymbol();
             if ((m_CurrentSymbol == symbolToCompare) == input)
             {
-                Debug.Log("Good");
+                AudioManager.Instance.PlaySound("Good");
             }
             else
             {
-                Debug.Log("Bad");
+                AudioManager.Instance.PlaySound("Wrong");
             }
         }
 
@@ -74,6 +75,7 @@ namespace PhyGames.NBack
             }
 
             m_ControlsUI.SetActive(true);
+            AudioManager.Instance.PlaySound("Appear");
             ShowNextSymbol();
         }
 
