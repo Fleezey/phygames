@@ -136,7 +136,22 @@ PrefabInstance:
     - target: {fileID: 5788246984634314710, guid: 314f46b59ccf6b843b4c5a1ce6c03214,
         type: 3}
       propertyPath: m_Interactable
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788246984634314710, guid: 314f46b59ccf6b843b4c5a1ce6c03214,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 839524048}
+    - target: {fileID: 5788246984634314710, guid: 314f46b59ccf6b843b4c5a1ce6c03214,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788246984634314710, guid: 314f46b59ccf6b843b4c5a1ce6c03214,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7338396076943661212, guid: 314f46b59ccf6b843b4c5a1ce6c03214,
         type: 3}
